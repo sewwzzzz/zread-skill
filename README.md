@@ -6,6 +6,8 @@ documentation for code repositories.
 The skill is meant for one job: help an agent understand an unfamiliar codebase
 through `zread` output instead of re-reading the entire repository file by file.
 
+⭐ 在[zread-skill](https://github.com/ZreadAI/zread-skill.git)基础上修改为自用版本，添加 LLM API 配置文档并添加容错生成监督器脚本（可以选择AI自主控制该skill流程，也可以选择脚本，该脚本提供走完生成项目文档的最佳路径）
+
 > **Language / 语言**：配置与恢复相关章节（第 3 节、Long runs、configuration.md）为中英对照；
 > 其余章节保持英文。
 > Sections about configuration and recovery (§3, "Long runs", `configuration.md`) are
