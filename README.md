@@ -188,6 +188,15 @@ After a successful generation, zread typically writes:
 - `./.zread/wiki/versions/<id>/<file>`: the actual markdown pages
 - `./.zread/wiki/drafts/`: unfinished generation state
 
+Resolve links by their **target**, not their text (the text is often just a
+basename). Strip the leading `../` sequence, then join onto the repo root.
+/ 按**目标**解析，不用链接文字（文字常只有文件名）：去掉 `../` 后拼到仓库根。
+
+```text
+[base.py](../../../../src/app/base.py#L14)  →  <repo-root>/src/app/base.py   (#L14 = 行号)
+[Foo](7-foo)                                →  .zread/wiki/versions/<id>/7-foo.md  (裸 slug = 另一页)
+```
+
 If you need to integrate with `zread` programmatically, see
 [references/stdio-protocol.md](./references/stdio-protocol.md).
 

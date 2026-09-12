@@ -43,7 +43,30 @@ Always run `zread` from the workspace root. After a successful generation:
 - `~/.zread/log/zread.log` — run log; read it first when something fails.
 
 To answer questions about a codebase that already has zread output, read these
-files directly with the file tools — do not invoke `zread browse`.
+files directly with the file tools — do not invoke `zread browse`. Resolve the
+links inside them with the rules in the next section.
+
+## Resolving links in generated pages / 页内链接解析
+
+Trust the link **target**, never the link **text** — zread often writes only a
+basename there (`[base.py](../../../..<…>/src/app/base.py#L14)`), sometimes the
+full path, so the text is not usable as a path.
+中文：只认链接**目标**，别认链接**文字**（文字常常只有文件名）。
+
+To resolve a target: strip its leading `../` sequence, then join onto the repo
+root. 规则：去掉开头的 `../` 串，再拼到仓库根。
+
+```text
+[base.py](../../../../src/app/base.py#L14)   →  <repo-root>/src/app/base.py   (#L14 = 行号)
+```
+
+- `#L14` / `#L1-L6` → line / line range in that file.
+- Prefix depth = dirs between repo root and the page file (today
+  `.zread/wiki/versions/<id>/` → 4). Count it from the real path, don't assume.
+  前缀层数由页面真实深度决定（当前 4 层），按实际路径数，别写死。
+- Two exceptions / 两类例外：**bare slug** = another wiki page, resolve inside
+  the same version dir and append `.md` (`[Foo](7-foo)` →
+  `versions/<id>/7-foo.md`); `https://…` = external URL.
 
 ## Commands
 
@@ -70,6 +93,8 @@ invoked from another program/agent.
      markdown directly. No CLI invocation needed.
    - For known *public* GitHub repos, prefer the `mcp__zread__*` tools
      (`get_repo_structure`, `read_file`, `search_doc`) over running the CLI.
+   - To open a file cited in a page, resolve the link target, not the text
+     (see below).
 
 2. **User wants to (re)generate docs?**
    - Confirm with the user first — `generate` is long-running, calls an LLM,
